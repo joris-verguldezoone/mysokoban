@@ -1,9 +1,17 @@
+# 0.5/0.1  et 100 %
+# x c'est 0.1 * 100
+# 2% et apres on multiplie case = 64 par 2%
+
+# il me manque l'appel de mes fonction de maniere a ce que ce soit récursif
+
 # sokoman ahahah a+
 from cmath import rect
 from ctypes.wintypes import RECT, RGB
 from turtle import Screen, position
 import pygame
 import const
+from datetime import datetime, timedelta
+# from datetime import timedelta
 
 
 # sql
@@ -38,7 +46,7 @@ def checkWalls(direction):
         wall = position_perso.top - moyenneY
         wall2 = position_perso.left
 
-        print(len(walls))
+        # print(len(walls))
         for case in walls:
 
             if case[1] == wall and case[0] == wall2:
@@ -80,9 +88,9 @@ def checkWalls(direction):
     #     print(case, (wall))
     #     if case == position - wall:
     #         bool = False
-    print("bool")
-    print(bool)
-    print("bool")
+    # print("bool")
+    # print(bool)
+    # print("bool")
     return bool
 
 
@@ -200,27 +208,116 @@ text_surface = my_font.render('Relax, enjoy death :)', False, (0, 0, 0))
 
 # txt
 
+# animation rate
+# def animationRate(delay):
+
+# current_time
 
 # Variable qui continue la boucle si = 1, stoppe si = 0
 continuer = 1
 # Boucle infinie de jeu
 temp = 0  # servira a se souvenir du dernier déplacement
+shock_wave_animation = False
+startingDate = datetime.now()
 while continuer:
+    if(shock_wave_animation):
+        # print('endDate')
+        # print(startingDate)
+        # print(endDate)
+        # print('endDate')
+
+        start = position_perso.left + (moyenneX/2)
+        # start = position_perso.left + moyenneX
+        end = position_perso.left + (moyenneX*3)
+        delay = 0.5
+        case = moyenneX
+        total_case = 3
+        position_getsuga = position_perso.left + moyenneX
+
+        current_step = 0
+
+        # while(position_getsuga <= end):
+        current_date = datetime.now()
+        delay_requis = (endDate - start_date).microseconds / \
+            1000  # conversion en millisecondes
+        # while(case <= 3):
+        delay_parcouru = 0
+        # delay_requis = datetime.now(timedelta(milliseconds=500))
+        # current_step = start
+
+        while(timedelta(milliseconds=datetime.now().microsecond) <= timedelta(milliseconds=endDate.microsecond)):
+            # fenetre.blit(
+            #     espace_vide, (position_perso.left + moyenneX, position_perso.top))
+            # if(timedelta(milliseconds=datetime.now().microsecond) >= timedelta(milliseconds=endDate.microsecond)):
+            if delay_parcouru >= (delay_requis - 5):
+                shock_wave_animation = False
+                print("shock_wave_animation = False")
+                # quit()
+            # current_step = current_step + step
+
+            delay_parcouru = (datetime.now() - start_date).microseconds/1000
+
+            pourcentage = (delay_parcouru * 100)/delay_requis
+            print(pourcentage)
+            pourcentage = pourcentage/100
+            loop_step = case * pourcentage
+
+            # print("coef_date")
+            # print(coef_date)
+
+            # coef_date = (current_date / endDate)
+            print("loop_step")
+            print(pourcentage)
+            print(delay_parcouru)
+            print(delay_requis)
+            print(loop_step)
+            current_step = start + loop_step
+            print('position_getsuga')
+            print(position_getsuga)
+            print(timedelta(milliseconds=endDate.microsecond))
+            print(timedelta(milliseconds=datetime.now().microsecond))
+            # if delay_parcouru <= delay_requis:
+
+            position_getsuga = fenetre.blit(
+                getsuga, (current_step, position_perso.top))
+
+            # if((current_date) % (endDate/delay) == 0):
+            # if()
+
+            # case = case + 1
+
+        # print(now)
+
+        # fulldate = datetime.datetime.strptime(date + ' ' + time, "%Y-%m-%d %H:%M:%S.%f")
+
+        # print(now, fulldate)  # :)
+
+        # la date suivante - la date de base + le coefficient pour
+        # savoir si on l'a dépassé et si on blit pas une autre img
+
     for event in pygame.event.get():  # On parcours la liste de tous les événements reçus
         if event.type == pygame.KEYDOWN:  # Si un de ces événements est de type QUIT
             print(event.type)
-            if event.type == 768:  # la touche c
+            if event.key == pygame.K_c:  # la touche c
+                shock_wave_animation = True
+                start_date = datetime.now()  # param
+                endDate = start_date + timedelta(milliseconds=2500)  # param
+
                 print('BAAAAAAAAAAAAAAAS')
+
                 if temp == 'droite':
                     print('BAAAAAAAAAAAAAAAS ENABLED')
-                    fenetre.blit(getsuga, (position_perso.left +
-                                 moyenneX, position_perso.top))
+                    getsuga.get_rect()
+                    position_getsuga = fenetre.blit(getsuga, (position_perso.left +
+                                                              moyenneX, position_perso.top))
+                    position_getsuga = position_perso.move(
+                        moyenneX + moyenneX, moyenneY)
+
                     position_getsuga = position_perso.move(
                         moyenneX + moyenneX + moyenneX, moyenneY)
+
                     position_getsuga = position_perso.move(
-                        moyenneX + moyenneX + moyenneX, moyenneY)
-                    position_getsuga = position_perso.move(
-                        moyenneX + moyenneX + moyenneX, moyenneY)
+                        moyenneX + moyenneX + moyenneX + moyenneX, moyenneY)
                 # elif temp == 'haut':
 
                 # elif temp == 'gauche':
@@ -239,12 +336,12 @@ while continuer:
                     if bool:
                         victory.append(item)
 
-            if event.type == pygame.K_ESCAPE:
-                print("K_ESCAPE" + pygame.K_ESCAPE)
+            if event.key == pygame.K_ESCAPE:
                 continuer = 0  # On arrête la boucle
             elif event.key == pygame.K_DOWN:  # Si "flèche bas"
                 couscous = checkWalls('bas')
-                print(couscous)
+                # print(couscous)
+
                 if couscous:
                     print('passé dedans')
                     # if position_perso.top < height - (moyenneY*2):
